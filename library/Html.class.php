@@ -20,7 +20,7 @@ class HTML {
 	}
 
 	function sanitize($data) {
-		return mysql_real_escape_string($data);
+		return $data;
 	}
 
 	function link($text,$path,$prompt = null,$confirmMessage = "Are you sure?") {

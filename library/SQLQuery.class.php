@@ -304,13 +304,11 @@ class SQLQuery {
 			/** Error Generation **/
 			return -1;
 		}
-		
 	}
 
     /** Saves an Object i.e. Updates/Inserts Query **/
-
 	function save() {
-		$query = '';
+
 		if (isset($this->id)) {
 			$updates = '';
 			foreach ($this->_describe as $field) {
@@ -321,14 +319,14 @@ class SQLQuery {
 
 			$updates = substr($updates,0,-1);
 
-			$query = 'UPDATE '.$this->_table.' SET '.$updates.' WHERE `id`=\''.mysql_real_escape_string($this->id).'\'';			
+			$query = 'UPDATE '.$this->_table.' SET '.$updates.' WHERE `id`=\''.$this->_dbHandle->quote($this->id).'\'';
 		} else {
 			$fields = '';
 			$values = '';
 			foreach ($this->_describe as $field) {
 				if ($this->$field) {
 					$fields .= '`'.$field.'`,';
-					$values .= '\''.mysql_real_escape_string($this->$field).'\',';
+					$values .= '\''.$this->_dbHandle->quote($this->$field).'\',';
 				}
 			}
 			$values = substr($values,0,-1);
@@ -336,7 +334,7 @@ class SQLQuery {
 
 			$query = 'INSERT INTO '.$this->_table.' ('.$fields.') VALUES ('.$values.')';
 		}
-		$this->_result = mysql_query($query, $this->_dbHandle);
+		$this->_result = $this->_dbHandle->exec($query);
 		$this->clear();
 		if ($this->_result == 0) {
             /** Error Generation **/
@@ -345,7 +343,6 @@ class SQLQuery {
 	}
  
 	/** Clear All Variables **/
-
 	function clear() {
 		foreach($this->_describe as $field) {
 			$this->$field = null;
@@ -367,8 +364,8 @@ class SQLQuery {
 			$pattern = '/SELECT (.*?) FROM (.*)LIMIT(.*)/i';
 			$replacement = 'SELECT COUNT(*) FROM $2';
 			$countQuery = preg_replace($pattern, $replacement, $this->_query);
-			$this->_result = mysql_query($countQuery, $this->_dbHandle);
-			$count = mysql_fetch_row($this->_result);
+			$this->_result = $this->_dbHandle->exec($countQuery);
+			$count = $this->_result->fetch();
 			$totalPages = ceil($count[0]/$this->_limit);
 			return $totalPages;
 		} else {
@@ -378,8 +375,7 @@ class SQLQuery {
 	}
 
     /** Get error string **/
-
     function getError() {
-        return mysql_error($this->_dbHandle);
+        return $this->_dbHandle->errorInfo($this->_dbHandle);
     }
 }
