@@ -4,10 +4,7 @@
     <bookmark url="file://$PROJECT_DIR$/library/SQLQuery.class.php" line="189" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1063bcc0-aa7a-43b0-a866-2b120dc664cb" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/library/Html.class.php" afterPath="$PROJECT_DIR$/library/Html.class.php" />
-      <change beforePath="$PROJECT_DIR$/library/SQLQuery.class.php" afterPath="$PROJECT_DIR$/library/SQLQuery.class.php" />
-    </list>
+    <list default="true" id="1063bcc0-aa7a-43b0-a866-2b120dc664cb" name="Default" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -114,12 +111,12 @@
       <option name="presentableId" value="Default" />
       <updated>1517472116085</updated>
       <workItem from="1517472117557" duration="2774000" />
-      <workItem from="1517491809490" duration="2358000" />
+      <workItem from="1517491809490" duration="2444000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="5132000" />
+    <option name="totallyTimeSpent" value="5218000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="2391" y="-9" width="2118" height="1281" extended-state="6" />
