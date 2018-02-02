@@ -19,6 +19,7 @@ class HTML {
 		return '<a href="'.$data.'" target = "_blank" >'.$data.'</a>'; 
 	}
 
+	/** @deprecated */
 	function sanitize($data) {
 		return $data;
 	}

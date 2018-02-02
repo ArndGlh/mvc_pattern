@@ -10,5 +10,4 @@ define('DB_USER', 'root');
 define('DB_PASSWORD', '');
 
 define('BASE_PATH','http://localhost/rest_api_2');
-
 define('PAGINATE_LIMIT', '5');

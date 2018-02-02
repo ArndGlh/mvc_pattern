@@ -6,7 +6,7 @@ class VanillaModel extends SQLQuery {
 		
 		global $inflect;
 
-		$this->connect(DB_HOST,DB_USER,DB_PASSWORD,DB_NAME);
+		$this->connect(DB_HOST,DB_NAME,DB_USER, DB_PASSWORD);
 		$this->_limit = PAGINATE_LIMIT;
 		$this->_model = get_class($this);
 		$this->_table = strtolower($inflect->pluralize($this->_model));

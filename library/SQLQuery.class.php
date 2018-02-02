@@ -25,7 +25,11 @@ class SQLQuery {
     function connect($host, $db_name, $username, $password){
         $this->_dbHandle = null;
         try{
-            $this->_dbHandle = new PDO("mysql:host=" . $host . ";dbname=" . $db_name, $username, $password);
+            var_dump("host : ".$host);
+            var_dump("db_name : ".$db_name);
+            var_dump("user : ".$username);
+            var_dump("pass : ".$password);
+            $this->_dbHandle = new PDO("mysql:dbname=" . $db_name . ";host=" . $host, $username, $password);
             $this->_dbHandle->exec("set names utf8");
         }catch(PDOException $exception){
             echo "Connection error: " . $exception->getMessage();
@@ -103,7 +107,7 @@ class SQLQuery {
 		
 		$this->_query = 'SELECT * FROM '.$from.' WHERE '.$conditions;
 
-		$this->_result = $this->_dbHandle->exec($this->_query);
+		$this->_result = $this->_dbHandle->prepare($this->_query);
 		$result = array();
 		$table = array();
 		$field = array();
@@ -135,7 +139,7 @@ class SQLQuery {
 	
 						$queryChild =  'SELECT * FROM '.$fromChild.' WHERE '.$conditionsChild;	
 						#echo '<!--'.$queryChild.'-->';
-						$resultChild = $this->_dbHandle->exec($queryChild);
+						$resultChild = $this->_dbHandle->prepare($queryChild);
 				
 						$tableChild = array();
 						$fieldChild = array();
@@ -187,7 +191,7 @@ class SQLQuery {
 
 						$queryChild =  'SELECT * FROM '.$fromChild.' WHERE '.$conditionsChild;	
 						#echo '<!--'.$queryChild.'-->';
-						$resultChild = $this->_dbHandle->exec($queryChild);
+						$resultChild = $this->_dbHandle->prepare($queryChild);
 				
 						$tableChild = array();
 						$fieldChild = array();
@@ -239,7 +243,7 @@ class SQLQuery {
 
 		global $inflect;
 
-		$this->_result = $this->_dbHandle->exec($query);
+		$this->_result = $this->_dbHandle->prepare($query);
 
 		$result = array();
 		$table = array();
@@ -277,7 +281,7 @@ class SQLQuery {
 		if (!$this->_describe) {
 			$this->_describe = array();
 			$query = 'DESCRIBE '.$this->_table;
-			$this->_result = $this->_dbHandle->exec($query);
+			$this->_result = $this->_dbHandle->prepare($query);
 			while ($row = $this->_result->fetch()) {
 				 array_push($this->_describe,$row[0]);
 			}
@@ -294,7 +298,7 @@ class SQLQuery {
 	function delete() {
 		if ($this->id) {
 			$query = 'DELETE FROM '.$this->_table.' WHERE `id`=\''.$this->_dbHandle->quote($this->id).'\'';
-			$this->_result = $this->_dbHandle->exec($query);
+			$this->_result = $this->_dbHandle->prepare($query);
 			$this->clear();
 			if ($this->_result == 0) {
 			    /** Error Generation **/
@@ -334,7 +338,7 @@ class SQLQuery {
 
 			$query = 'INSERT INTO '.$this->_table.' ('.$fields.') VALUES ('.$values.')';
 		}
-		$this->_result = $this->_dbHandle->exec($query);
+		$this->_result = $this->_dbHandle->prepare($query);
 		$this->clear();
 		if ($this->_result == 0) {
             /** Error Generation **/
@@ -358,13 +362,12 @@ class SQLQuery {
 	}
 
 	/** Pagination Count **/
-
 	function totalPages() {
 		if ($this->_query && $this->_limit) {
 			$pattern = '/SELECT (.*?) FROM (.*)LIMIT(.*)/i';
 			$replacement = 'SELECT COUNT(*) FROM $2';
 			$countQuery = preg_replace($pattern, $replacement, $this->_query);
-			$this->_result = $this->_dbHandle->exec($countQuery);
+			$this->_result = $this->_dbHandle->prepare($countQuery);
 			$count = $this->_result->fetch();
 			$totalPages = ceil($count[0]/$this->_limit);
 			return $totalPages;
